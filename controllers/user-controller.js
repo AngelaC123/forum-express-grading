@@ -43,11 +43,15 @@ const userController = {
   getUser: (req, res, next) => {
     return User.findByPk(req.params.id, {
       include: [
-        { model: Comment, include: Restaurant }
+        { model: Comment, include: Restaurant },
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+        { model: Restaurant, as: 'FavoritedRestaurants' }
       ]
     })
       .then(user => {
         if (!user) throw new Error("User didn't exist!")
+        console.log(user)
         res.render('users/profile', { user: user.toJSON() })
       })
       .catch(err => next(err))
