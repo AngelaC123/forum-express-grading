@@ -41,7 +41,9 @@ const userController = {
   },
 
   getUser: (req, res, next) => {
-    return User.findByPk(req.params.id, {
+    const user = req.user
+    const onCheckedUserId = Number(req.params.id)
+    return User.findByPk(onCheckedUserId, {
       include: [
         { model: Comment, include: Restaurant },
         { model: User, as: 'Followings' },
@@ -49,10 +51,22 @@ const userController = {
         { model: Restaurant, as: 'FavoritedRestaurants' }
       ]
     })
-      .then(user => {
-        if (!user) throw new Error("User didn't exist!")
-        console.log(user)
-        res.render('users/profile', { user: user.toJSON() })
+
+      .then(onCheckedUser => {
+        if (!onCheckedUser) throw new Error("User didn't exist!")
+
+        onCheckedUser = onCheckedUser.toJSON()
+        const commentedRestaurantId = []
+        const onCheckedUserCommentedRestaurants = []
+
+        // eslint-disable-next-line array-callback-return
+        onCheckedUser.Comments.map(data => {
+          if (!commentedRestaurantId.includes(data.restaurantId)) {
+            commentedRestaurantId.push(data.restaurantId)
+            onCheckedUserCommentedRestaurants.push(data)
+          }
+        })
+        res.render('users/profile', { user, onCheckedUser, onCheckedUserCommentedRestaurants })
       })
       .catch(err => next(err))
   },

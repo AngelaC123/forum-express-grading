@@ -3,17 +3,38 @@
   <div class="card mt-4">
     <div class="row g-0">
       <div class="col-md-4">
-        <img src="{{user.image}}" class="img-fluid rounded-start" style="width:100%; height:100%; " alt="Profile_image">
+        <img src="{{onCheckedUser.image}}" class="img-fluid rounded-start"
+          style="width:100%; height:100%; background-color:rgb(232, 232, 232)" alt="Profile_image">
       </div>
       <div class="col-md-8 ps-5 pt-4">
         <div class="card-body mb-4">
-          <h2 class="card-title">{{user.name}}</h2>
-          <p class="card-text mt-4">{{user.email}}</p>
-          <p class="card-text m-0 mt-4">以評論餐廳</p>
-          <p class="card-text m-0 mt-">收藏的餐廳</p>
-          <p class="card-text m-0">following (追蹤者)</p>
-          <p class="card-text m-0">follower (追隨者)</p>
-          <a class="btn btn-primary mt-3" href="/users/{{user.id}}/edit">edit</a>
+          <h2 class="card-title">{{onCheckedUser.name}}</h2>
+          <p class="card-text mt-4">{{onCheckedUser.email}}</p>
+          <p class="card-text m-0 mt-4">
+            <strong>{{onCheckedUserCommentedRestaurants.length}}</strong>
+            已評論餐廳
+          </p>
+          <p class="card-text m-0 mt-">
+            <strong>
+              {{onCheckedUser.FavoritedRestaurants.length}}
+            </strong>
+            收藏的餐廳
+          </p>
+          <p class="card-text m-0">
+            <strong>
+              {{onCheckedUser.Followings.length}}
+            </strong>
+            following (追蹤者)
+          </p>
+          <p class="card-text m-0">
+            <strong>
+              {{onCheckedUser.Followers.length}}
+            </strong>
+            follower (追隨者)
+          </p>
+          {{#ifCond user.id onCheckedUser.id}}
+          <a class="btn btn-primary mt-3" href="/users/{{onCheckedUser.id}}/edit">edit</a>
+          {{/ifCond}}
         </div>
       </div>
     </div>
@@ -23,14 +44,14 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-header">
-          {{#if user.Followings.length}}
-          {{user.Followings.length}} following (追蹤者)
+          {{#if onCheckedUser.Followings.length}}
+          {{onCheckedUser.Followings.length}} following (追蹤者)
           {{else}}
           尚未追蹤其他使用者
           {{/if}}
         </div>
         <div class="card-body" style="min-height: 100px;">
-          {{#each user.Followings}}
+          {{#each onCheckedUser.Followings}}
           <a href="/users/{{this.id}}" class="text-decoration-none">
             <img src="{{this.image}}" class=" center-block img-responsive img-thumbnail m-1"
               style="width: 80px; height:80px" alt="restaurant-image">
@@ -41,14 +62,14 @@
 
       <div class="card mt-3">
         <div class="card-header">
-          {{#if user.Followers.length}}
-          {{user.Followers.length}} follower (追隨者)
+          {{#if onCheckedUser.Followers.length}}
+          {{onCheckedUser.Followers.length}} follower (追隨者)
           {{else}}
           尚未有追隨者
           {{/if}}
         </div>
         <div class="card-body" style="min-height: 100px;">
-          {{#each user.Followers}}
+          {{#each onCheckedUser.Followers}}
           <a href="/users/{{this.id}}" class="text-decoration-none">
             <img src="{{this.image}}" class=" center-block img-responsive img-thumbnail m-1"
               style="width: 80px; height:80px" alt="restaurant-image">
@@ -62,14 +83,14 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-          {{#if user.Comments.length}}
-          {{user.Comments.length}}已評論餐廳
+          {{#if onCheckedUserCommentedRestaurants.length}}
+          {{onCheckedUserCommentedRestaurants.length}}已評論餐廳
           {{else}}
           尚未評論餐廳
           {{/if}}
         </div>
         <div class="card-body" style="min-height: 100px;">
-          {{#each user.Comments}}
+          {{#each onCheckedUserCommentedRestaurants}}
           <a href="/restaurants/{{this.Restaurant.id}}" class="text-decoration-none">
             <img src="{{this.Restaurant.image}}" class=" center-block img-responsive img-thumbnail m-1"
               style="width: 80px; height:80px" alt="restaurant-image">
@@ -80,14 +101,14 @@
 
       <div class="card mt-3">
         <div class="card-header">
-          {{#if user.FavoritedRestaurants.length}}
-          {{user.FavoritedRestaurants.length}}收藏的餐廳
+          {{#if onCheckedUser.FavoritedRestaurants.length}}
+          {{onCheckedUser.FavoritedRestaurants.length}}收藏的餐廳
           {{else}}
           尚未收藏餐廳
           {{/if}}
         </div>
         <div class="card-body" style="min-height: 100px;">
-          {{#each user.FavoritedRestaurants}}
+          {{#each onCheckedUser.FavoritedRestaurants}}
           <a href="/restaurants/{{this.id}}" class="text-decoration-none">
             <img src="{{this.image}}" class=" center-block img-responsive img-thumbnail m-1"
               style="width: 80px; height:80px" alt="restaurant-image">
