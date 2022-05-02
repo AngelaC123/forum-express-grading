@@ -1,5 +1,5 @@
-const { Restaurant, Category, Comment, User } = require('../models')
-const { getOffset, getPagination } = require('../helpers/pagination-helper')
+const { Restaurant, Category, Comment, User } = require('../../models')
+const { getOffset, getPagination } = require('../../helpers/pagination-helper')
 
 const restaurantController = {
   getRestaurants: (req, res, next) => {
@@ -114,6 +114,7 @@ const restaurantController = {
     })
       .then(restaurants => {
         // const favoritedRestaurantsId = req.user && req.user.FavoritedRestaurants.map(f => f.id)
+
         const result = restaurants
           .map(r => ({
             ...r.toJSON(),
@@ -121,6 +122,7 @@ const restaurantController = {
             // isFavorited: favoritedRestaurantsId.includes(r.id)
             isFavorited: req.user && req.user.FavoritedRestaurants.some(fr => r.id === fr.id)
           }))
+
           .sort((a, b) => b.favoritedCount - a.favoritedCount)
 
         const topTenRestaurants = result.slice(0, LIMIT)

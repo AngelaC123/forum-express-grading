@@ -1,5 +1,5 @@
 const express = require('express')
-const routes = require('./routes')
+// const routes = require('./routes')
 const exphbs = require('express-handlebars')
 const flash = require('connect-flash')
 const session = require('express-session')
@@ -8,6 +8,7 @@ const { getUser } = require('./helpers/auth-helpers')
 const handlebarsHelpers = require('./helpers/handlebars-helpers')
 const methodOverride = require('method-override')
 const path = require('path')
+const { pages } = require('./routes')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -39,7 +40,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(routes)
+app.use(pages)
 
 app.listen(port, () => {
   console.info(`Example app listening on port ${port}!`)
