@@ -17,28 +17,14 @@ const adminController = {
   },
 
   postRestaurant: (req, res, next) => {
-    const { name, tel, address, openingHours, description, categoryId } = req.body
-    if (!name) throw new Error('Restaurant name is required!')
-
-    const { file } = req
-    imgurFileHandler(file)
-      .then(filePath => {
-        Restaurant.create({
-          name,
-          tel,
-          address,
-          openingHours,
-          description,
-          image: filePath || null,
-          categoryId
-        })
-      })
-      .then(() => {
-        req.flash('success_messages', 'restaurant is successfully created!')
-        res.redirect('/admin/restaurants')
-      })
-      .catch(err => next(err))
+    adminServices.postRestaurant(req, (err, data) => {
+      if (err) return next(err)
+      req.flash('success_messages', 'restaurant is successfully created!')
+      res.redirect('/admin/restaurants')
+      // res.redirect('/admin/restaurants', data)  不知道為什麼加上DATA就沒有辦法redirect回/admin/restaurants，會停留在create page，但教案有加data。
+    })
   },
+
   getRestaurant: (req, res, next) => {
     Restaurant.findByPk(req.params.id, {
       raw: true,
@@ -94,7 +80,7 @@ const adminController = {
   },
 
   deleteRestaurant: (req, res, next) => {
-    adminServices.deleteRestaurant(req, (err, data) => err ? next(err) : res.render('/admin/restaurants', data))
+    adminServices.deleteRestaurant(req, (err, data) => err ? next(err) : res.redirect('/admin/restaurants', data))
   },
 
   // Users controllers

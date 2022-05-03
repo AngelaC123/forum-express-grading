@@ -22,6 +22,8 @@ app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: hand
 app.set('view engine', 'hbs')
 
 app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
