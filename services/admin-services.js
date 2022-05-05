@@ -39,7 +39,7 @@ const adminController = {
         if (!restaurant) throw new Error("Restaruant didn't exist")
         return restaurant.destroy()
       })
-      .then(deletedRestaurant => cb(null, { deletedRestaurant }))
+      .then(deletedRestaurant => cb(null, { restaurant: deletedRestaurant }))
       .catch(err => cb(err))
   }
 
