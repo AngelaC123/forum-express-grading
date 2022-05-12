@@ -12,6 +12,7 @@ const { getUser } = require('./helpers/auth-helpers')
 const handlebarsHelpers = require('./helpers/handlebars-helpers')
 const methodOverride = require('method-override')
 const path = require('path')
+const cors = require('cors')
 const { pages, apis } = require('./routes')
 
 const app = express()
@@ -20,6 +21,8 @@ const SESSION_SECRET = 'secret'
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: handlebarsHelpers }))
 app.set('view engine', 'hbs')
+
+app.use(cors())
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
